@@ -41,7 +41,7 @@ const HAPPY_BIRTHDAY = [
 const BEAT = 0.5;
 const GAP = 2.2;
 
-function playBell(ctx, dest, freq, start, dur, peak = 0.18) {
+function playBell(ctx, dest, freq, start, dur, peak = 0.38) {
   const osc = ctx.createOscillator();
   const sparkle = ctx.createOscillator();
   const gain = ctx.createGain();
@@ -57,7 +57,7 @@ function playBell(ctx, dest, freq, start, dur, peak = 0.18) {
   gain.gain.exponentialRampToValueAtTime(0.0001, start + dur);
 
   sparkleGain.gain.setValueAtTime(0.0001, start);
-  sparkleGain.gain.exponentialRampToValueAtTime(peak * 0.22, start + 0.02);
+  sparkleGain.gain.exponentialRampToValueAtTime(peak * 0.3, start + 0.02);
   sparkleGain.gain.exponentialRampToValueAtTime(0.0001, start + dur * 0.8);
 
   osc.connect(gain);
@@ -110,10 +110,10 @@ export default function Melody() {
     if (!ctx) return undefined;
 
     const master = ctx.createGain();
-    master.gain.value = 0.04;
+    master.gain.value = 0.14;
     const filter = ctx.createBiquadFilter();
     filter.type = "lowpass";
-    filter.frequency.value = 2400;
+    filter.frequency.value = 3200;
     filter.Q.value = 0.55;
     master.connect(filter);
     filter.connect(ctx.destination);
@@ -125,7 +125,7 @@ export default function Melody() {
       let t = startAt;
       HAPPY_BIRTHDAY.forEach(([freq, beats]) => {
         const dur = beats * BEAT;
-        playBell(ctx, master, freq, t, Math.max(0.32, dur * 1.05), 0.2);
+        playBell(ctx, master, freq, t, Math.max(0.32, dur * 1.05), 0.4);
         t += dur;
       });
       return t;
