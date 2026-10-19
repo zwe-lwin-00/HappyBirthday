@@ -33,7 +33,7 @@ const STORY = [
     id: "now",
     when: "20 Oct 2026",
     title: "Twenty-five",
-    note: "This birthday. This journal. This wish for more years of us.",
+    note: "This birthday. This gift. This wish for more years of us.",
   },
 ];
 

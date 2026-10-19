@@ -9,7 +9,7 @@ export default function Elements() {
   return (
     <Reveal as="section" className="band wrap" id="elements">
       <div className="section-head">
-        <p className="kicker">A smaller periodic table</p>
+        <p className="kicker">Chosen for you</p>
         <h2>
           The elements of <em>you</em>
         </h2>

@@ -32,7 +32,7 @@ export default function App() {
       {opened ? (
         <div className="journal">
           <a className="skip" href="#hello">
-            Skip to the journal
+            Skip to the top
           </a>
           <Nav />
           <Hero countdown={countdown} />
@@ -51,7 +51,7 @@ export default function App() {
             <p>20 October 2001 — 20 October 2026 · Ours since 12 February 2024</p>
             <p>
               {`For ${her || "Htet Kay Zin Linn"}${from ? `, from ${from}` : ""}. `}
-              Volume 25.
+              Happy 25th.
             </p>
           </footer>
         </div>

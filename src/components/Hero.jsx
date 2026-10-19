@@ -11,7 +11,7 @@ export default function Hero({ countdown }) {
   return (
     <Reveal as="header" className="hero wrap" id="hello">
       <div className="hero-copy">
-        <p className="kicker">Volume {AGE} · 20 October 2026</p>
+        <p className="kicker">Happy {AGE}th · 20 October 2026</p>
         <h2>
           Happy
           <em> birthday{name ? "," : ""}</em>

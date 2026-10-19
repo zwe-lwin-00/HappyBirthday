@@ -10,7 +10,7 @@ export default function Letter() {
   return (
     <Reveal as="section" className="band wrap" id="letter">
       <div className="section-head">
-        <p className="kicker">Private correspondence</p>
+        <p className="kicker">Just for you</p>
         <h2>
           A letter, <em>sealed</em>
         </h2>

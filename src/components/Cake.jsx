@@ -188,7 +188,7 @@ export default function Cake({ onCelebrate }) {
   return (
     <section className={`band wrap cake-section${celebrating ? " is-party" : ""}`} id="cake">
       <div className="section-head">
-        <p className="kicker">Last page</p>
+        <p className="kicker">One last wish</p>
         <h2>
           Make a <em>wish</em>
         </h2>

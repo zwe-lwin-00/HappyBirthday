@@ -40,7 +40,7 @@ export default function Nav() {
 
   return (
     <div className="nav-wrap">
-      <nav className="nav" aria-label="Journal">
+      <nav className="nav" aria-label="Birthday pages">
         {NAV.map(([id, label]) => (
           <a
             key={id}

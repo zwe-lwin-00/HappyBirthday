@@ -4,11 +4,11 @@ function pad(value) {
 
 export default function Countdown({ countdown }) {
   if (countdown.canOpen && countdown.isBirthday) {
-    return <p className="today-banner">Today is 20 October. Happy 25th birthday — open the journal.</p>;
+    return <p className="today-banner">Today is 20 October. Happy 25th birthday — open it.</p>;
   }
 
   if (countdown.canOpen) {
-    return <p className="today-banner">The countdown is over. Open the journal whenever you like.</p>;
+    return <p className="today-banner">The countdown is over. Your birthday is waiting.</p>;
   }
 
   const units = [

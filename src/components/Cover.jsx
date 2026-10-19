@@ -17,7 +17,7 @@ export default function Cover({ countdown, onOpen }) {
     <section className="cover">
       <Floaters />
       <div className="cover-top">
-        <span>Vol. {AGE}</span>
+        <span>Happy {AGE}th</span>
         <span>20 Oct</span>
       </div>
 
@@ -30,7 +30,7 @@ export default function Cover({ countdown, onOpen }) {
           {birthLabel}
         </p>
         <h1 className="cover-fade" style={{ "--d": "220ms" }}>
-          <span>Field journal</span>
+          <span>Happy birthday</span>
           <strong>{AGE}</strong>
         </h1>
         <p className="cover-lede cover-fade" style={{ "--d": "360ms" }}>
@@ -49,7 +49,7 @@ export default function Cover({ countdown, onOpen }) {
           disabled={locked}
           aria-disabled={locked}
           aria-label={
-            locked ? "Journal locked. Opens when the countdown ends." : "Open the journal"
+            locked ? "Locked. Opens when the countdown ends." : "Open your birthday"
           }
         >
           <svg className="cover-ribbon-art" viewBox="0 0 340 100" aria-hidden="true">
@@ -102,7 +102,7 @@ export default function Cover({ countdown, onOpen }) {
                 <span className="cover-open-short">Opens at midnight</span>
               </>
             ) : (
-              "Open the journal"
+              "Open your birthday"
             )}
           </span>
         </button>
