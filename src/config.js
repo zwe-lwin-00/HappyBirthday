@@ -39,12 +39,12 @@ export const pinks = [
 
 // Photos live in src/assets/images as 1.jpg, 2.jpg, …
 export const photos = [
-  { slot: 1, caption: "Frame one", alt: "A photo of Htet", tilt: -4 },
-  { slot: 2, caption: "Frame two", alt: "A photo of Htet", tilt: 3 },
-  { slot: 3, caption: "Frame three", alt: "A photo of Htet", tilt: -2 },
-  { slot: 4, caption: "Frame four", alt: "A photo of Htet", tilt: 5 },
-  { slot: 5, caption: "Frame five", alt: "A photo of Htet", tilt: -3 },
-  { slot: 6, caption: "Frame six", alt: "A photo of Htet", tilt: 2 },
+  { slot: 1, caption: "", alt: "A photo of Htet", tilt: -4 },
+  { slot: 2, caption: "", alt: "A photo of Htet", tilt: 3 },
+  { slot: 3, caption: "", alt: "A photo of Htet", tilt: -2 },
+  { slot: 4, caption: "", alt: "A photo of Htet", tilt: 5 },
+  { slot: 5, caption: "", alt: "A photo of Htet", tilt: -3 },
+  { slot: 6, caption: "", alt: "A photo of Htet", tilt: 2 },
 ];
 
 export const elements = [
@@ -139,7 +139,7 @@ export const reagents = [
     id: "motion",
     name: "Kinetic energy",
     amount: "constant",
-    detail: "The sample does not sit still for long.",
+    detail: "You don’t sit still for long — and I wouldn’t want you to.",
   },
 ];
 
@@ -191,8 +191,8 @@ export const wishes = [
 export const letter = [
   "Twenty-five years ago, on a Saturday in October, the world got Htet Kay Zin Linn. Louder. Brighter. Much harder to sit still around. I am glad it did.",
   "You move through a day like it belongs to you. Pink light. Quick feet. A laugh that fills the room before anyone else is ready.",
-  "Since 12 February 2024, my days have had a better center of gravity. This journal is my experiment. Can a website hold even a fraction of the way you light a day?",
-  "Results are in. It cannot. It can still say this, clearly, on the record: happy 25th birthday, Htet.",
+  "Since 12 February 2024, my days have had a better center of gravity. I tried to pack a fraction of the way you light a day into these pages.",
+  "It still isn’t enough. So let this say it clearly, on the record: happy 25th birthday, Htet.",
   "I hope this year feels like your favorite kind of afternoon. Soft color, a good question, and nowhere you are supposed to sit still.",
 ];
 

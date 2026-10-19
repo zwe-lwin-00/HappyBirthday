@@ -33,7 +33,7 @@ export default function Hero({ countdown }) {
 
       <aside className="specimen">
         <div className="specimen-head">
-          <span>Specimen</span>
+          <span>Portrait</span>
           <span>Htet · 25</span>
         </div>
         <Atom />

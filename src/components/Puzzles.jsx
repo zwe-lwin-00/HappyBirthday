@@ -148,7 +148,7 @@ export default function Puzzles() {
 
       <div className="puzzle-grid">
         <article className={`puzzle-card memory-card${memoryDone ? " is-done" : ""}`}>
-          <p className="kicker">Puzzle three</p>
+          <p className="kicker">Memory</p>
           <h3>Match the soft things</h3>
           <p className="puzzle-help">Find the pairs. Moves: {moves}</p>
 
@@ -182,7 +182,7 @@ export default function Puzzles() {
         </article>
 
         <article className={`puzzle-card lock-card${lockOpen ? " is-done" : ""}`}>
-          <p className="kicker">Puzzle four</p>
+          <p className="kicker">The lock</p>
           <h3>Open the date lock</h3>
           <p className="puzzle-help">{hint}</p>
 
@@ -215,55 +215,7 @@ export default function Puzzles() {
             </p>
           )}
         </article>
-
-        <article className="puzzle-card riddle-card">
-          <p className="kicker">Puzzle five</p>
-          <h3>A Libra riddle</h3>
-          <p className="riddle-text">
-            I hang in the sky with two equal bowls. I am not a fish, not a lion, not twins. Venus keeps
-            me company. What am I?
-          </p>
-          <Riddle />
-        </article>
       </div>
     </Reveal>
-  );
-}
-
-function Riddle() {
-  const [guess, setGuess] = useState("");
-  const [state, setState] = useState("idle");
-
-  function check(event) {
-    event.preventDefault();
-    const value = guess.trim().toLowerCase();
-    if (value.includes("libra") || value.includes("scale") || value === "♎") {
-      setState("yes");
-    } else {
-      setState("no");
-    }
-  }
-
-  return (
-    <form className="riddle-form" onSubmit={check}>
-      <input
-        value={guess}
-        onChange={(event) => {
-          setGuess(event.target.value);
-          setState("idle");
-        }}
-        placeholder="Your answer"
-        aria-label="Riddle answer"
-        autoComplete="off"
-      />
-      <button type="submit" className="btn">
-        Guess
-      </button>
-      <p className="puzzle-status" aria-live="polite">
-        {state === "yes" && "Yes. Libra — her sign, her sky."}
-        {state === "no" && "Warm, but not yet. Think of her birthday month."}
-        {state === "idle" && "Type a word. Or a symbol."}
-      </p>
-    </form>
   );
 }

@@ -1,99 +1,85 @@
 import { useEffect, useRef, useState } from "react";
 
-// Soft music-box loop in G major (not Happy Birthday — gentler, warmer)
-const G3 = 196.0;
-const A3 = 220.0;
-const B3 = 246.94;
+// Soft music-box Happy Birthday in C
 const C4 = 261.63;
 const D4 = 293.66;
 const E4 = 329.63;
-const Fs4 = 369.99;
+const F4 = 349.23;
 const G4 = 392.0;
 const A4 = 440.0;
-const B4 = 493.88;
+const Bb4 = 466.16;
 const C5 = 523.25;
-const D5 = 587.33;
 
-// [freq, beats] — quiet waltz feel
-const PHRASE = [
-  [G4, 1],
-  [B4, 1],
-  [D5, 1],
-  [B4, 1],
-  [A4, 1],
-  [G4, 1],
-  [Fs4, 1],
+const HAPPY_BIRTHDAY = [
+  [C4, 0.75],
+  [C4, 0.25],
   [D4, 1],
-  [E4, 1],
+  [C4, 1],
+  [F4, 1],
+  [E4, 2],
+  [C4, 0.75],
+  [C4, 0.25],
+  [D4, 1],
+  [C4, 1],
   [G4, 1],
-  [A4, 1],
-  [B4, 1],
-  [A4, 1.5],
-  [G4, 0.5],
-  [Fs4, 2],
-  [G4, 1],
-  [B4, 1],
-  [D5, 1],
+  [F4, 2],
+  [C4, 0.75],
+  [C4, 0.25],
   [C5, 1],
-  [B4, 1],
   [A4, 1],
-  [G4, 1],
+  [F4, 1],
   [E4, 1],
-  [D4, 1],
-  [E4, 1],
-  [G4, 1],
+  [D4, 2],
+  [Bb4, 0.75],
+  [Bb4, 0.25],
   [A4, 1],
-  [Fs4, 1],
-  [G4, 3],
+  [F4, 1],
+  [G4, 1],
+  [F4, 2.5],
 ];
 
-const CHORDS = [
-  [G3, B3, D4],
-  [D4, Fs4, A4],
-  [E4, G4, B4],
-  [C4, E4, G4],
-  [G3, B3, D4],
-  [C4, E4, G4],
-  [D4, Fs4, A4],
-  [G3, B3, D4],
-];
+const BEAT = 0.5;
+const GAP = 2.2;
 
-const BEAT = 0.52;
-const GAP = 2.4;
-
-function playBell(ctx, dest, freq, start, dur, peak = 0.22) {
+function playBell(ctx, dest, freq, start, dur, peak = 0.18) {
   const osc = ctx.createOscillator();
-  const partial = ctx.createOscillator();
+  const sparkle = ctx.createOscillator();
   const gain = ctx.createGain();
-  const partialGain = ctx.createGain();
+  const sparkleGain = ctx.createGain();
 
   osc.type = "sine";
   osc.frequency.value = freq;
-  partial.type = "sine";
-  partial.frequency.value = freq * 2.01;
+  sparkle.type = "sine";
+  sparkle.frequency.value = freq * 2.005;
 
   gain.gain.setValueAtTime(0.0001, start);
-  gain.gain.exponentialRampToValueAtTime(peak, start + 0.02);
+  gain.gain.exponentialRampToValueAtTime(peak, start + 0.025);
   gain.gain.exponentialRampToValueAtTime(0.0001, start + dur);
 
-  partialGain.gain.setValueAtTime(0.0001, start);
-  partialGain.gain.exponentialRampToValueAtTime(peak * 0.28, start + 0.015);
-  partialGain.gain.exponentialRampToValueAtTime(0.0001, start + dur * 0.85);
+  sparkleGain.gain.setValueAtTime(0.0001, start);
+  sparkleGain.gain.exponentialRampToValueAtTime(peak * 0.22, start + 0.02);
+  sparkleGain.gain.exponentialRampToValueAtTime(0.0001, start + dur * 0.8);
 
   osc.connect(gain);
-  partial.connect(partialGain);
+  sparkle.connect(sparkleGain);
   gain.connect(dest);
-  partialGain.connect(dest);
+  sparkleGain.connect(dest);
   osc.start(start);
-  partial.start(start);
-  osc.stop(start + dur + 0.05);
-  partial.stop(start + dur + 0.05);
+  sparkle.start(start);
+  osc.stop(start + dur + 0.04);
+  sparkle.stop(start + dur + 0.04);
 }
 
 export default function Melody() {
   const [on, setOn] = useState(true);
   const [ready, setReady] = useState(false);
   const ctxRef = useRef(null);
+  const readyRef = useRef(false);
+
+  function markReady() {
+    readyRef.current = true;
+    setReady(true);
+  }
 
   useEffect(() => {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -101,7 +87,7 @@ export default function Melody() {
 
     const unlock = () => {
       if (!ctxRef.current) ctxRef.current = new AudioContext();
-      ctxRef.current.resume().then(() => setReady(true));
+      ctxRef.current.resume().then(markReady);
       window.removeEventListener("pointerdown", unlock);
       window.removeEventListener("keydown", unlock);
       window.removeEventListener("touchstart", unlock);
@@ -124,11 +110,11 @@ export default function Melody() {
     if (!ctx) return undefined;
 
     const master = ctx.createGain();
-    master.gain.value = 0.045;
+    master.gain.value = 0.04;
     const filter = ctx.createBiquadFilter();
     filter.type = "lowpass";
-    filter.frequency.value = 2800;
-    filter.Q.value = 0.5;
+    filter.frequency.value = 2400;
+    filter.Q.value = 0.55;
     master.connect(filter);
     filter.connect(ctx.destination);
 
@@ -137,29 +123,18 @@ export default function Melody() {
 
     const schedulePass = (startAt) => {
       let t = startAt;
-      const phraseBeats = PHRASE.reduce((sum, [, b]) => sum + b, 0);
-      const chordStep = (phraseBeats / CHORDS.length) * BEAT;
-
-      CHORDS.forEach((notes, index) => {
-        const when = startAt + index * chordStep;
-        notes.forEach((freq, n) => {
-          playBell(ctx, master, freq, when, chordStep * 1.35, 0.06 - n * 0.012);
-        });
-      });
-
-      PHRASE.forEach(([freq, beats]) => {
+      HAPPY_BIRTHDAY.forEach(([freq, beats]) => {
         const dur = beats * BEAT;
-        playBell(ctx, master, freq, t, Math.max(0.35, dur * 1.1), 0.2);
+        playBell(ctx, master, freq, t, Math.max(0.32, dur * 1.05), 0.2);
         t += dur;
       });
-
       return t;
     };
 
     const loop = () => {
       if (!alive) return;
       const end = schedulePass(ctx.currentTime + 0.06);
-      const waitMs = Math.max(500, (end - ctx.currentTime + GAP) * 1000);
+      const waitMs = Math.max(400, (end - ctx.currentTime + GAP) * 1000);
       timer = window.setTimeout(loop, waitMs);
     };
 
@@ -171,7 +146,7 @@ export default function Melody() {
       const now = ctx.currentTime;
       master.gain.cancelScheduledValues(now);
       master.gain.setValueAtTime(master.gain.value, now);
-      master.gain.linearRampToValueAtTime(0.0001, now + 0.4);
+      master.gain.linearRampToValueAtTime(0.0001, now + 0.35);
     };
   }, [on, ready]);
 
@@ -179,19 +154,28 @@ export default function Melody() {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     if (!AudioContext) return;
     if (!ctxRef.current) ctxRef.current = new AudioContext();
-    ctxRef.current.resume().then(() => setReady(true));
+    ctxRef.current.resume().then(markReady);
+
+    // Browsers block sound until a click. First click should unlock + start,
+    // not flip "Pause" into off (which needed a second click before).
+    if (!readyRef.current) {
+      setOn(true);
+      return;
+    }
     setOn((value) => !value);
   }
+
+  const playing = on && ready;
 
   return (
     <button
       type="button"
-      className={on ? "melody is-on" : "melody"}
+      className={playing ? "melody is-on" : "melody"}
       onClick={toggle}
-      aria-pressed={on}
-      aria-label={on ? "Pause the music box" : "Play the music box"}
+      aria-pressed={playing}
+      aria-label={playing ? "Pause Happy Birthday" : "Play Happy Birthday"}
     >
-      {on ? (
+      {playing ? (
         <span className="melody-bars" aria-hidden="true">
           <i />
           <i />
@@ -202,7 +186,7 @@ export default function Melody() {
           <path d="M9 18a3 3 0 1 1-2-2.83V5.5l11-2v9.67A3 3 0 1 1 16 16V6.4l-7 1.27V18z" fill="currentColor" />
         </svg>
       )}
-      <span className="melody-label">{on ? "Pause" : "Music box"}</span>
+      <span className="melody-label">{playing ? "Pause" : "Play"}</span>
     </button>
   );
 }

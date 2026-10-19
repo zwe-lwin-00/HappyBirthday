@@ -4,8 +4,8 @@ import Reveal from "./Reveal";
 
 export default function Letter() {
   const [open, setOpen] = useState(false);
-  const dear = config.herName.trim() || "My love";
-  const from = config.fromName.trim();
+  const dear = config.herName.trim() || "Htet";
+  const from = config.fromName.trim() || "Zwe Lwin Oo";
 
   return (
     <Reveal as="section" className="band wrap" id="letter">
@@ -26,7 +26,7 @@ export default function Letter() {
             ))}
             <p className="sign">
               Yours,
-              <strong>{from || "always"}</strong>
+              <strong>{from}</strong>
             </p>
             <button type="button" className="btn secondary" onClick={() => setOpen(false)}>
               Fold it closed
@@ -34,7 +34,7 @@ export default function Letter() {
           </article>
         ) : (
           <div className="sealed">
-            <p>For Htet, on the day she turns 25.</p>
+            <p>For Htet, on the day you turn 25.</p>
             <button type="button" className="seal" onClick={() => setOpen(true)}>
               <span className="wax" aria-hidden="true">
                 25

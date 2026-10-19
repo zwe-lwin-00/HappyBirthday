@@ -1,37 +1,60 @@
 import { useMemo, useState } from "react";
 import Reveal from "./Reveal";
 
-const STARS = [
-  { id: 0, x: 48, y: 92, name: "Zubenelgenubi" },
-  { id: 1, x: 118, y: 58, name: "Zubeneschamali" },
-  { id: 2, x: 168, y: 108, name: "Brachium" },
-  { id: 3, x: 220, y: 70, name: "Delta" },
-  { id: 4, x: 268, y: 118, name: "Theta" },
-];
-
-const PATH = [0, 1, 2, 3, 4];
-
 const NOTES = [
   {
     title: "Air",
-    text: "She moves like weather: quick, bright, and hard to pin down for long.",
+    text: "You move like weather: quick, bright, and hard to pin down for long.",
   },
   {
     title: "Venus",
-    text: "Soft color finds her. So do pretty things, pink ribbons, and a room that feels kinder.",
+    text: "Soft color finds you. So do pretty things, pink ribbons, and a room that feels kinder.",
   },
   {
     title: "Balance",
-    text: "Not stillness. Balance. Motion on one side, calm on the other, both somehow hers.",
+    text: "Not stillness. Balance. Motion on one side, calm on the other, both somehow yours.",
   },
 ];
+
+const STORY = [
+  {
+    id: "born",
+    when: "20 Oct 2001",
+    title: "You arrived",
+    note: "A Saturday. The world got louder — in the best way.",
+  },
+  {
+    id: "us",
+    when: "12 Feb 2024",
+    title: "Ours began",
+    note: "The day my days found a better center.",
+  },
+  {
+    id: "now",
+    when: "20 Oct 2026",
+    title: "Twenty-five",
+    note: "This birthday. This journal. This wish for more years of us.",
+  },
+];
+
+function shuffleStory() {
+  const next = [...STORY];
+  for (let i = next.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [next[i], next[j]] = [next[j], next[i]];
+  }
+  if (next.every((item, index) => item.id === STORY[index].id)) {
+    [next[0], next[1]] = [next[1], next[0]];
+  }
+  return next;
+}
 
 export default function Libra() {
   const [left, setLeft] = useState(2);
   const [right, setRight] = useState(2);
-  const [path, setPath] = useState([]);
-  const [pathDone, setPathDone] = useState(false);
-  const [pathWrong, setPathWrong] = useState(false);
+  const [order, setOrder] = useState(shuffleStory);
+  const [picked, setPicked] = useState(null);
+  const [storyDone, setStoryDone] = useState(false);
 
   const tip = useMemo(() => {
     const diff = right - left;
@@ -49,24 +72,29 @@ export default function Libra() {
     setRight(2);
   }
 
-  function tapStar(id) {
-    if (pathDone) return;
-    const expected = PATH[path.length];
-    if (id !== expected) {
-      setPathWrong(true);
-      setPath([]);
-      window.setTimeout(() => setPathWrong(false), 550);
+  function tapMoment(index) {
+    if (storyDone) return;
+    if (picked === null) {
+      setPicked(index);
       return;
     }
-    const next = [...path, id];
-    setPath(next);
-    if (next.length === PATH.length) setPathDone(true);
+    if (picked === index) {
+      setPicked(null);
+      return;
+    }
+    const next = [...order];
+    [next[picked], next[index]] = [next[index], next[picked]];
+    setOrder(next);
+    setPicked(null);
+    if (next.every((item, i) => item.id === STORY[i].id)) {
+      setStoryDone(true);
+    }
   }
 
-  function resetPath() {
-    setPath([]);
-    setPathDone(false);
-    setPathWrong(false);
+  function reshuffle() {
+    setOrder(shuffleStory());
+    setPicked(null);
+    setStoryDone(false);
   }
 
   return (
@@ -76,9 +104,7 @@ export default function Libra() {
         <h2>
           Under the <em>scales</em>
         </h2>
-        <p>
-          Born beneath Libra. An air sign, ruled by Venus. Two little puzzles for her sky.
-        </p>
+        <p>Born beneath Libra — an air sign, ruled by Venus. A balance game, and a story only we share.</p>
       </div>
 
       <div className="libra-grid">
@@ -99,9 +125,9 @@ export default function Libra() {
         </article>
 
         <article className={`libra-card scales-card${balanced ? " is-balanced" : ""}`}>
-          <p className="kicker">Puzzle one</p>
-          <h3>Find the balance</h3>
-          <p className="puzzle-help">Add weight to either side. Libra likes the middle.</p>
+          <p className="kicker">Balance</p>
+          <h3>Find the middle</h3>
+          <p className="puzzle-help">Tip the scales left or right until they settle even.</p>
 
           <div className="scales" style={{ "--tip": `${tip}deg` }}>
             <div className="scales-stand" aria-hidden="true" />
@@ -139,85 +165,52 @@ export default function Libra() {
                 ? "Leaning left…"
                 : tip > 0
                   ? "Leaning right…"
-                  : "Even for now. Add more if you like."}
+                  : "Even for now."}
           </p>
         </article>
 
-        <article className={`libra-card path-card${pathDone ? " is-done" : ""}${pathWrong ? " is-wrong" : ""}`}>
-          <p className="kicker">Puzzle two</p>
-          <h3>Trace her constellation</h3>
-          <p className="puzzle-help">Tap the stars in order, from the left wing across.</p>
+        <article className={`libra-card story-card${storyDone ? " is-done" : ""}`}>
+          <p className="kicker">Our story</p>
+          <h3>Put the moments in order</h3>
+          <p className="puzzle-help">Tap one card, then another to swap. Oldest first.</p>
 
-          <div className="sky-board">
-            <svg className="libra-sky" viewBox="0 0 320 170" aria-hidden="true">
-              <defs>
-                <linearGradient id="libraLine" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stopColor="#ffb3c9" />
-                  <stop offset="100%" stopColor="#e4376a" />
-                </linearGradient>
-              </defs>
-              {PATH.slice(0, -1).map((from, index) => {
-                const to = PATH[index + 1];
-                const a = STARS[from];
-                const b = STARS[to];
-                const lit = path.length > index + 1 || pathDone;
-                return (
-                  <line
-                    key={`${from}-${to}`}
-                    x1={a.x}
-                    y1={a.y}
-                    x2={b.x}
-                    y2={b.y}
-                    className={lit ? "sky-line is-lit" : "sky-line"}
-                    stroke="url(#libraLine)"
-                    strokeWidth="2.4"
-                    strokeLinecap="round"
-                  />
-                );
-              })}
-              {STARS.map((star) => {
-                const lit = path.includes(star.id) || pathDone;
-                return (
-                  <circle
-                    key={`dot-${star.id}`}
-                    cx={star.x}
-                    cy={star.y}
-                    r={lit ? 7 : 5}
-                    className={lit ? "sky-dot is-lit" : "sky-dot"}
-                  />
-                );
-              })}
-            </svg>
-
-            {STARS.map((star, index) => {
-              const lit = path.includes(star.id) || pathDone;
-              const next = PATH[path.length] === star.id;
-              return (
+          <ol className="story-board">
+            {order.map((moment, index) => (
+              <li key={moment.id}>
                 <button
-                  key={star.id}
                   type="button"
-                  className={lit ? "sky-hit is-lit" : next ? "sky-hit is-next" : "sky-hit"}
-                  style={{ left: `${(star.x / 320) * 100}%`, top: `${(star.y / 170) * 100}%` }}
-                  onClick={() => tapStar(star.id)}
-                  aria-label={`Star ${index + 1}, ${star.name}`}
-                />
-              );
-            })}
-          </div>
+                  className={
+                    storyDone
+                      ? "story-moment is-done"
+                      : picked === index
+                        ? "story-moment is-picked"
+                        : "story-moment"
+                  }
+                  onClick={() => tapMoment(index)}
+                  disabled={storyDone}
+                >
+                  <span className="story-step">{index + 1}</span>
+                  <span className="story-copy">
+                    <strong>{moment.when}</strong>
+                    <em>{moment.title}</em>
+                    <span>{moment.note}</span>
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ol>
 
           <div className="path-actions">
             <p className="puzzle-status" aria-live="polite">
-              {pathDone
-                ? "Constellation complete. Her sky is lit."
-                : pathWrong
-                  ? "Not that one. Start again from the left."
-                  : `Star ${Math.min(path.length + 1, PATH.length)} of ${PATH.length}`}
+              {storyDone
+                ? "That’s us. From your first day to this one — and still going."
+                : picked === null
+                  ? "Pick a moment to move."
+                  : "Now pick where it should go."}
             </p>
-            {(path.length > 0 || pathDone) && (
-              <button type="button" className="btn secondary" onClick={resetPath}>
-                Trace again
-              </button>
-            )}
+            <button type="button" className="btn secondary" onClick={reshuffle}>
+              Shuffle again
+            </button>
           </div>
         </article>
       </div>

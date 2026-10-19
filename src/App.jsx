@@ -50,7 +50,7 @@ export default function App() {
           <footer className="colophon">
             <p>20 October 2001 — 20 October 2026 · Ours since 12 February 2024</p>
             <p>
-              {her ? `For ${her}${from ? `, from ${from}` : ""}. ` : "For her 25th birthday. "}
+              {`For ${her || "Htet Kay Zin Linn"}${from ? `, from ${from}` : ""}. `}
               Volume 25.
             </p>
           </footer>

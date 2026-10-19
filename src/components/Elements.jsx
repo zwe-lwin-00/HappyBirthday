@@ -11,15 +11,12 @@ export default function Elements() {
       <div className="section-head">
         <p className="kicker">A smaller periodic table</p>
         <h2>
-          The elements <em>of her</em>
+          The elements of <em>you</em>
         </h2>
-        <p>
-          A short chart built from real elements that feel like Htet. The numbers are real. The notes
-          are personal.
-        </p>
+        <p>Twelve real elements, chosen because they feel like Htet. Tap one and read the note.</p>
       </div>
 
-      <div className="element-grid" role="tablist" aria-label="Elements of her">
+      <div className="element-grid" role="tablist" aria-label="Elements of Htet">
         {elements.map((item, index) => {
           const selected = item.symbol === current.symbol;
           return (

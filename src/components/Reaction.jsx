@@ -25,7 +25,7 @@ export default function Reaction() {
         <h2>
           Pink + curiosity + <em>motion</em>
         </h2>
-        <p>Three things already known about Htet. Pour them in. See what happens.</p>
+        <p>Three things that feel like you. Pour them in. Watch what blooms.</p>
       </div>
 
       <div className="lab">
@@ -45,7 +45,7 @@ export default function Reaction() {
                 <span className="vial-copy">
                   <strong>{item.name}</strong>
                   <em>{item.amount}</em>
-                  <span>{used ? "Added to the flask." : item.detail}</span>
+                  <span>{used ? "In the flask." : item.detail}</span>
                 </span>
               </button>
             );
@@ -103,9 +103,15 @@ export default function Reaction() {
               </>
             ) : (
               <>
-                <p className="kicker">Still mixing</p>
-                <h3>{poured.length === 0 ? "The flask is waiting" : `${poured.length} of 3 added`}</h3>
-                <p>Add all three. This one is just for fun, and for her.</p>
+                <p className="kicker">Almost you</p>
+                <h3>
+                  {poured.length === 0
+                    ? "The flask is waiting"
+                    : poured.length === 1
+                      ? "One in. Two to go."
+                      : "Two in. One more."}
+                </h3>
+                <p>Pink, curiosity, and motion — pour them all, and see what you make.</p>
               </>
             )}
           </div>

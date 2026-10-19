@@ -303,7 +303,7 @@ export default function Cake({ onCelebrate }) {
               <p className="wish-made celebrate-copy" aria-live="polite">
                 Happy birthday, Htet. The wish is yours now.
               </p>
-              <p className="party-sub">I already made mine.</p>
+              <p className="party-sub">I wished for more years of us.</p>
               <button type="button" className="btn secondary" onClick={relight}>
                 Light them again
               </button>

@@ -69,34 +69,23 @@ export default function Photos() {
             </>
           )}
         </h2>
-        <p>
-          {filled.length
-            ? "Tap a frame. The room gets quieter for a second."
-            : "Add her photos to src/assets/images as 1.jpg, 2.jpg, …"}
-        </p>
+        <p>Tap a frame. The room gets quieter for a second.</p>
       </div>
 
       <div className="photo-grid">
-        {ready.map((item, index) => (
+        {filled.map((item, index) => (
           <button
             key={item.slot}
             type="button"
-            className={item.src ? "polaroid has-photo" : "polaroid is-empty"}
+            className="polaroid has-photo"
             style={{ "--rot": `${item.tilt}deg`, "--d": `${index * 70}ms` }}
-            onClick={() => item.src && setActive(index)}
-            disabled={!item.src}
+            onClick={() => setActive(ready.indexOf(item))}
+            aria-label={item.caption || item.alt}
           >
             <span className="polaroid-frame">
-              {item.src ? (
-                <img src={item.src} alt={item.alt} loading="lazy" />
-              ) : (
-                <span className="polaroid-empty">
-                  <strong>{item.slot}</strong>
-                  <em>Add {item.slot}.jpg</em>
-                </span>
-              )}
+              <img src={item.src} alt={item.alt} loading="lazy" />
             </span>
-            <span className="polaroid-cap">{item.caption}</span>
+            {item.caption ? <span className="polaroid-cap">{item.caption}</span> : null}
           </button>
         ))}
       </div>
@@ -123,7 +112,7 @@ export default function Photos() {
             </button>
             <figure className="lightbox-card" onClick={(event) => event.stopPropagation()}>
               <img src={current.src} alt={current.alt} />
-              <figcaption>{current.caption}</figcaption>
+              {current.caption ? <figcaption>{current.caption}</figcaption> : null}
             </figure>
             <button
               type="button"

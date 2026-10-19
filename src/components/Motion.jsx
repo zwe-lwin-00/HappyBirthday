@@ -7,13 +7,13 @@ export default function Motion() {
   return (
     <Reveal as="section" className="motion" id="motion">
       <div className="wrap motion-copy">
-        <p className="kicker">Field note</p>
+        <p className="kicker">Always moving</p>
         <h2>
           Built for <em>motion</em>
         </h2>
         <p>
-          An active girl who treats sitting still as optional. Quick feet. Full laugh. The pace of
-          someone whose favorite answer is “let’s go,” already halfway there.
+          You treat sitting still as optional. Quick feet. Full laugh. The pace of someone whose
+          favorite answer is “let’s go,” already halfway there.
         </p>
       </div>
 
