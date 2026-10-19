@@ -3,11 +3,11 @@ function pad(value) {
 }
 
 export default function Countdown({ countdown }) {
-  if (countdown.canOpen && countdown.isBirthday) {
+  if (countdown.isBirthday) {
     return <p className="today-banner">Today is 20 October. Happy 25th birthday — open it.</p>;
   }
 
-  if (countdown.canOpen) {
+  if (countdown.done) {
     return <p className="today-banner">The countdown is over. Your birthday is waiting.</p>;
   }
 

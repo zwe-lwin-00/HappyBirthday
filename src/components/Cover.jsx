@@ -36,7 +36,7 @@ export default function Cover({ countdown, onOpen }) {
         <p className="cover-lede cover-fade" style={{ "--d": "360ms" }}>
           {locked
             ? `For ${name}. Always in motion. Soft color. A day waiting to be opened.`
-            : `Open it. ${name} is ${AGE}, and the day is hers.`}
+            : `Open it. ${name} is ${AGE}, and the day is yours.`}
         </p>
         <div className="cover-fade" style={{ "--d": "480ms" }}>
           <Countdown countdown={countdown} />

@@ -1,12 +1,12 @@
 import { AGE, anniLabel, birthLabel, config, pinks, yearsTogether } from "../config";
-import Atom from "./Atom";
-import Countdown from "./Countdown";
+import BirthdayCapy from "./BirthdayCapy";
 import Reveal from "./Reveal";
 
 export default function Hero({ countdown }) {
   const name = config.herName.trim();
   const full = config.herFullName.trim();
   const together = yearsTogether(countdown.now);
+  const herDay = countdown.isBirthday || countdown.done;
 
   return (
     <Reveal as="header" className="hero wrap" id="hello">
@@ -33,11 +33,17 @@ export default function Hero({ countdown }) {
 
       <aside className="specimen">
         <div className="specimen-head">
-          <span>Portrait</span>
-          <span>Htet · 25</span>
+          <span>For you</span>
+          <span>
+            {name || "Htet"} · {AGE}
+          </span>
         </div>
-        <Atom />
-        <Countdown countdown={countdown} />
+        <BirthdayCapy />
+        <p className="hero-aside-note">
+          {herDay
+            ? "Happy birthday, Htet — the softest guest already arrived."
+            : "A little capybara came to say happy birthday."}
+        </p>
         <div className="swatches" aria-label="Shades of pink">
           {pinks.map(([color, label]) => (
             <div key={label} className="swatch">

@@ -5,7 +5,7 @@ import Reveal from "./Reveal";
 export default function Letter() {
   const [open, setOpen] = useState(false);
   const dear = config.herName.trim() || "Htet";
-  const from = config.fromName.trim() || "Zwe Lwin Oo";
+  const from = config.fromName.trim() || "Zwe";
 
   return (
     <Reveal as="section" className="band wrap" id="letter">

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Reveal from "./Reveal";
 
 const NOTES = [
@@ -16,51 +16,48 @@ const NOTES = [
   },
 ];
 
-const STORY = [
-  {
-    id: "born",
-    when: "20 Oct 2001",
-    title: "You arrived",
-    note: "A Saturday. The world got louder — in the best way.",
-  },
-  {
-    id: "us",
-    when: "12 Feb 2024",
-    title: "Ours began",
-    note: "The day my days found a better center.",
-  },
-  {
-    id: "now",
-    when: "20 Oct 2026",
-    title: "Twenty-five",
-    note: "This birthday. This gift. This wish for more years of us.",
-  },
-];
+const GOAL = 25;
 
-function shuffleStory() {
-  const next = [...STORY];
-  for (let i = next.length - 1; i > 0; i -= 1) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [next[i], next[j]] = [next[j], next[i]];
-  }
-  if (next.every((item, index) => item.id === STORY[index].id)) {
-    [next[0], next[1]] = [next[1], next[0]];
-  }
-  return next;
+function makeSpark(id) {
+  return {
+    id,
+    left: 8 + Math.random() * 78,
+    top: 10 + Math.random() * 68,
+    size: 0.85 + Math.random() * 0.55,
+    delay: Math.random() * 1.2,
+    hue: Math.random() > 0.45 ? "rose" : "gold",
+  };
+}
+
+function makeField() {
+  return Array.from({ length: 7 }, (_, index) => makeSpark(index + 1));
 }
 
 export default function Libra() {
   const [left, setLeft] = useState(2);
   const [right, setRight] = useState(2);
-  const [order, setOrder] = useState(shuffleStory);
-  const [picked, setPicked] = useState(null);
-  const [storyDone, setStoryDone] = useState(false);
+  const [caught, setCaught] = useState(0);
+  const [sparks, setSparks] = useState(makeField);
+  const [burst, setBurst] = useState(0);
+  const done = caught >= GOAL;
 
   const tip = useMemo(() => {
     const diff = right - left;
     return Math.max(-18, Math.min(18, diff * 6));
   }, [left, right]);
   const balanced = left === right && left > 0;
+  const progress = Math.min(100, (caught / GOAL) * 100);
+
+  useEffect(() => {
+    if (done) return undefined;
+    const id = window.setInterval(() => {
+      setSparks((current) => {
+        if (current.length >= 8) return current;
+        return [...current, makeSpark(Date.now() + Math.random())];
+      });
+    }, 900);
+    return () => window.clearInterval(id);
+  }, [done]);
 
   function add(side) {
     if (side === "left") setLeft((value) => Math.min(6, value + 1));
@@ -72,29 +69,17 @@ export default function Libra() {
     setRight(2);
   }
 
-  function tapMoment(index) {
-    if (storyDone) return;
-    if (picked === null) {
-      setPicked(index);
-      return;
-    }
-    if (picked === index) {
-      setPicked(null);
-      return;
-    }
-    const next = [...order];
-    [next[picked], next[index]] = [next[index], next[picked]];
-    setOrder(next);
-    setPicked(null);
-    if (next.every((item, i) => item.id === STORY[i].id)) {
-      setStoryDone(true);
-    }
+  function catchSpark(id) {
+    if (done) return;
+    setSparks((current) => current.filter((spark) => spark.id !== id));
+    setCaught((value) => Math.min(GOAL, value + 1));
+    setBurst((value) => value + 1);
   }
 
-  function reshuffle() {
-    setOrder(shuffleStory());
-    setPicked(null);
-    setStoryDone(false);
+  function playAgain() {
+    setCaught(0);
+    setSparks(makeField());
+    setBurst(0);
   }
 
   return (
@@ -104,7 +89,7 @@ export default function Libra() {
         <h2>
           Under the <em>scales</em>
         </h2>
-        <p>Born beneath Libra — an air sign, ruled by Venus. A balance game, and a story only we share.</p>
+        <p>Born beneath Libra — an air sign, ruled by Venus. Balance first. Then catch twenty-five soft sparks.</p>
       </div>
 
       <div className="libra-grid">
@@ -169,47 +154,49 @@ export default function Libra() {
           </p>
         </article>
 
-        <article className={`libra-card story-card${storyDone ? " is-done" : ""}`}>
-          <p className="kicker">Our story</p>
-          <h3>Put the moments in order</h3>
-          <p className="puzzle-help">Tap one card, then another to swap. Oldest first.</p>
+        <article className={`libra-card spark-card${done ? " is-done" : ""}`}>
+          <p className="kicker">Twenty-five</p>
+          <h3>Catch the soft sparks</h3>
+          <p className="puzzle-help">Tap every little light. One for each year.</p>
 
-          <ol className="story-board">
-            {order.map((moment, index) => (
-              <li key={moment.id}>
+          <div className="spark-meter" aria-hidden="true">
+            <span className="spark-meter-fill" style={{ width: `${progress}%` }} />
+            <em>
+              {caught} / {GOAL}
+            </em>
+          </div>
+
+          <div className={`spark-field${done ? " is-done" : ""}`} key={burst}>
+            {done ? (
+              <p className="spark-win">
+                All twenty-five. Happy birthday, Htet —
+                <em> lit up.</em>
+              </p>
+            ) : (
+              sparks.map((spark) => (
                 <button
+                  key={spark.id}
                   type="button"
-                  className={
-                    storyDone
-                      ? "story-moment is-done"
-                      : picked === index
-                        ? "story-moment is-picked"
-                        : "story-moment"
-                  }
-                  onClick={() => tapMoment(index)}
-                  disabled={storyDone}
-                >
-                  <span className="story-step">{index + 1}</span>
-                  <span className="story-copy">
-                    <strong>{moment.when}</strong>
-                    <em>{moment.title}</em>
-                    <span>{moment.note}</span>
-                  </span>
-                </button>
-              </li>
-            ))}
-          </ol>
+                  className={`spark-dot is-${spark.hue}`}
+                  style={{
+                    left: `${spark.left}%`,
+                    top: `${spark.top}%`,
+                    "--size": spark.size,
+                    "--delay": `${spark.delay}s`,
+                  }}
+                  onClick={() => catchSpark(spark.id)}
+                  aria-label="Catch a spark"
+                />
+              ))
+            )}
+          </div>
 
           <div className="path-actions">
             <p className="puzzle-status" aria-live="polite">
-              {storyDone
-                ? "That’s us. From your first day to this one — and still going."
-                : picked === null
-                  ? "Pick a moment to move."
-                  : "Now pick where it should go."}
+              {done ? "Every year caught. Soft and bright." : "They’re quick — keep tapping."}
             </p>
-            <button type="button" className="btn secondary" onClick={reshuffle}>
-              Shuffle again
+            <button type="button" className="btn secondary" onClick={playAgain}>
+              Play again
             </button>
           </div>
         </article>

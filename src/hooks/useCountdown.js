@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { TURNING } from "../config";
 
-/** True from local midnight on 20 Oct 2026 onward — journal may open. */
+/** True from local midnight on 20 Oct 2026 onward — birthday may open. */
 export function canOpenJournal(now = new Date()) {
   if (now.getTime() >= TURNING.getTime()) return true;
 

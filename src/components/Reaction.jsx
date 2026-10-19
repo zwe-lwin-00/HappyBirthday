@@ -30,7 +30,7 @@ export default function Reaction() {
 
       <div className="lab">
         <div className="vials">
-          {reagents.map((item, index) => {
+          {reagents.map((item) => {
             const used = poured.includes(item.id);
             return (
               <button
@@ -40,7 +40,6 @@ export default function Reaction() {
                 onClick={() => pour(item.id)}
                 disabled={used}
               >
-                <span className="vial-index">0{index + 1}</span>
                 <span className={`vial-glass tone-${item.id}`} aria-hidden="true" />
                 <span className="vial-copy">
                   <strong>{item.name}</strong>

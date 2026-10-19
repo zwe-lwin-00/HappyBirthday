@@ -1,7 +1,7 @@
 export const config = {
   herName: "Htet",
   herFullName: "Htet Kay Zin Linn",
-  fromName: "Zwe Lwin Oo",
+  fromName: "Zwe",
 };
 
 export const BIRTH = new Date(2001, 9, 20);
